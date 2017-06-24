@@ -44,7 +44,7 @@
         fatal("socket failed");
     }
     setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on));
-    b =bind(s,(struct sockaddr *)&channel, sizeof(channel));
+    b =bind(s,(struct sockaddr *)&channel, sizeof(channel)); // use bind
     if (b < 0){
         fatal("bind failed!!!");
     }
