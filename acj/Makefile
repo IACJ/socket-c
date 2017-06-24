@@ -6,10 +6,10 @@ PROGS = hello demo_client
 
 all: ${PROGS}
 
-hello:
+hello: hello.c
 	cc $@.c -o $@
 
-demo_client:
+demo_client: demo_client.c
 	cc $@.c -o $@
 
 clean:
