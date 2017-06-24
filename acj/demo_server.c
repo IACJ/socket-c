@@ -8,13 +8,21 @@
 
  #include <sys/types.h>
  #include <sys/fcntl.h>
+ #include <sys/stat.h>
  #include <sys/socket.h>
  #include <netinet/in.h>
  #include <netdb.h>
 
- #define SERBER_PORT 2121
+ #include <string.h>
+ #include <stdio.h>
+ #include <unistd.h>
+ #include <stdlib.h>
+
+ #define SERVER_PORT 2121
  #define BUF_SIZE 4096
  #define QUEUE_SIZE 10
+
+ void fatal(char *str);
 
  int main(int argc, char **argv){
     int s;
@@ -36,27 +44,34 @@
         fatal("socket failed");
     }
     setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char *) &on, sizeof(on));
-    b =bind(S,(struct sockaddr *)&channel, sizeof(channel));
+    b =bind(s,(struct sockaddr *)&channel, sizeof(channel));
     if (b < 0){
         fatal("bind failed!!!");
     }
     l = listen(s, QUEUE_SIZE); // use listen
+    printf("\nlistening...\n");
     while (1){
         sa = accept(s,0,0); // use accept
         if (sa < 0){
             fatal("accept failed!!!");
+        }else{
+            printf("\ngot one connection...\n");
         }
+        memset(buf,0,sizeof(char)*BUF_SIZE);
         read(sa,buf, BUF_SIZE);
+        printf("sending file : %s ...\n",buf);       
         fd = open(buf, O_RDONLY);
 
         if (fd < 0){
-            fatal("open failed!!!");
+            printf("open failed!!!\n\n");
+            close(fd);
+            close(sa);
+            continue;
         }
-
         while (1){
             bytes = read(fd,buf,BUF_SIZE);
-            if (bytes < 0){
-                printf("done...");
+            if (bytes <= 0){
+                printf("done...\n\n");
                 break;
             }
             write(sa,buf,bytes);
@@ -65,3 +80,8 @@
         close(sa);
     }
  }
+
+void fatal(char *str){
+    printf("%s\n",str);
+    exit(1);
+}

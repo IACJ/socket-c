@@ -19,6 +19,7 @@
 #define BUF_SIZE 4096
 
 void fatal(char *str);
+
 int main(int argc,char **argv){
     int c;
     int s;
@@ -48,12 +49,12 @@ int main(int argc,char **argv){
     if (c < 0) {
         fatal("connect failed!!!");
     }
-    write(s, argv[2], strlen(argv[2]+1)); //use write
+    write(s, argv[2], strlen(argv[2])+1); //use write
     
     while (1){
         bytes = read(s,buf,BUF_SIZE);   /* use read */
         if (bytes <=0){
-            printf("nothing to read,exit now.\n\n")
+            printf("\n\nnothing to read,exit now.\n\n");
             exit(0);
         }
         write(1,buf,bytes);

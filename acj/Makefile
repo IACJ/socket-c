@@ -2,7 +2,7 @@
 #
 # My First Makefile
 
-PROGS = hello demo_client
+PROGS = hello demo_client demo_server
 
 all: ${PROGS}
 
@@ -10,6 +10,9 @@ hello: hello.c
 	cc $@.c -o $@
 
 demo_client: demo_client.c
+	cc $@.c -o $@
+
+demo_server: demo_server.c
 	cc $@.c -o $@
 
 clean:
