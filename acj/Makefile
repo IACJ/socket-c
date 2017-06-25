@@ -2,18 +2,24 @@
 #
 # My First Makefile
 
-PROGS = hello demo_client demo_server
+PROGS =  demo_client demo_server ACJ_client.excute ACJ_server.excute hello
 
 all: ${PROGS}
 
+ACJ_client.excute: ACJ_client.c
+	gcc ACJ_client.c -o ACJ_client.excute
+
+ACJ_server.excute: ACJ_server.c
+	gcc ACJ_server.c -o ACJ_server.excute
+
 hello: hello.c
-	cc $@.c -o $@
+	gcc hello.c -o hello
 
 demo_client: demo_client.c
-	cc $@.c -o $@
+	gcc $@.c -o $@
 
 demo_server: demo_server.c
-	cc $@.c -o $@
+	gcc $@.c -o $@
 
 clean:
 	rm -rf ${PROGS} *.o
